@@ -8,7 +8,7 @@
       "version": "3.12",
       "installTools": false
     },
-    "./features/mda-support": {
+    "./features/mdabone-support": {
       "pythonPackages": "numpy trimesh pytest"
     }
   },

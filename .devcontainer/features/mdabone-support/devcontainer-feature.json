@@ -1,8 +1,8 @@
 {
-  "id": "mda-support",
+  "id": "mdabone-support",
   "version": "1.0.0",
   "name": "MDA devcontainer support",
-  "documentationURL": "https://github.com/michaeldallen/mda/.devcontainer/features/mda-support",
+  "documentationURL": "https://github.com/michaeldallen/mdabone/.devcontainer/features/mdabone-support",
   "description": "Installs OpenSCAD, the Antigravity CLI, and required Python packages for the MDA workspace.",
   "options": {
     "installOpenSCAD": {
