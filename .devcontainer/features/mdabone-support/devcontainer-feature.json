@@ -1,0 +1,29 @@
+{
+  "id": "mda-support",
+  "version": "1.0.0",
+  "name": "MDA devcontainer support",
+  "documentationURL": "https://github.com/michaeldallen/mda/.devcontainer/features/mda-support",
+  "description": "Installs OpenSCAD, the Antigravity CLI, and required Python packages for the MDA workspace.",
+  "options": {
+    "installOpenSCAD": {
+      "type": "boolean",
+      "default": true,
+      "description": "Install OpenSCAD via apt."
+    },
+    "installAntigravity": {
+      "type": "boolean",
+      "default": true,
+      "description": "Install the Antigravity CLI."
+    },
+    "pythonPackages": {
+      "type": "string",
+      "default": "numpy trimesh",
+      "description": "Space-separated Python packages to install via pip."
+    },
+    "openscadPath": {
+      "type": "string",
+      "default": "${containerWorkspaceFolder}/openscad",
+      "description": "Path to the OpenSCAD library directory used by the workspace."
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "features": {
+    "ghcr.io/devcontainers/features/git-lfs:1": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.12",
+      "installTools": false
+    },
+    "./features/mda-support": {
+      "pythonPackages": "numpy trimesh pytest"
+    }
+  },
+
+  // Customizes your VS Code terminal settings inside the Codespace
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "github.vscode-github-actions",
+        "me-dutour-mathieu.vscode-github-actions",
+        "omartawfik.github-actions-vscode",
+        "ms-azuretools.vscode-containers",
+        "ms-vscode.makefile-tools"
+      ],
+      "settings": {
+        // Ensures your terminal looks for binaries in local user folders
+        "terminal.integrated.env.linux": {
+          "PATH": "${env:PATH}:${userHome}/.local/bin"
+        }
+      }
+    }
+  }
+}
