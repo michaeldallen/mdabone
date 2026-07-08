@@ -15,6 +15,15 @@
 
   // Customizes your VS Code terminal settings inside the Codespace
   "customizations": {
+    "codespaces": {
+      "repositories": {
+        "michaeldallen/mda": {
+          "permissions": {
+            "contents": "write"
+          }
+        }
+      }
+    },
     "vscode": {
       "extensions": [
         "github.vscode-github-actions",
