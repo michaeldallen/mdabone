@@ -13,6 +13,9 @@
     }
   },
 
+  // Triggers the environment detection script upon container creation
+  "postCreateCommand": "./.devcontainer/setup-git.sh",
+
   // Customizes your VS Code terminal settings inside the Codespace
   "customizations": {
     "codespaces": {
@@ -32,8 +35,6 @@
         "ms-azuretools.vscode-containers",
         "ms-vscode.makefile-tools"
       ],
-      // Triggers the environment detection script upon container creation
-      "postCreateCommand": "./.devcontainer/setup-git.sh",
       "settings": {
         // Ensures your terminal looks for binaries in local user folders
         "terminal.integrated.env.linux": {
