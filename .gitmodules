@@ -1,0 +1,3 @@
+[submodule "mda"]
+	path = mda
+	url = git@github.com:michaeldallen/mda.git
