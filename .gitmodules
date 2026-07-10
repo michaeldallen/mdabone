@@ -1,9 +1,0 @@
-[submodule "mda"]
-	path = mda
-	url = git@github.com:michaeldallen/mda.git
-[submodule "libmose"]
-	path = libmose
-	url = git@github.com:michaeldallen/libmose.git
-[submodule "3d"]
-	path = 3d
-	url = git@github.com:michaeldallen/3d.git
