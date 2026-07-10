@@ -6,7 +6,14 @@ set -euo pipefail
 
 INSTALL_OPENCAD=${INSTALLOPENCAD:-true}
 INSTALL_ANTIGRAVITY=${INSTALLANTIGRAVITY:-true}
+APT_PACKAGES=${APTPACKAGES:-shellcheck}
 PYTHON_PACKAGES=${PYTHONPACKAGES:-numpy trimesh pytest}
+
+if [ -n "${APT_PACKAGES}" ]; then
+  apt-get update
+  # shellcheck disable=SC2086
+  apt-get install -y ${APT_PACKAGES}
+fi
 
 if [ "${INSTALL_OPENCAD}" = "true" ]; then
   rm -fv /etc/apt/sources.list.d/yarn.list || true

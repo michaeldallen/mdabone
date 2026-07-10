@@ -9,6 +9,7 @@
       "installTools": false
     },
     "./features/mdabone-support": {
+      "aptPackages": "shellcheck",
       "pythonPackages": "numpy trimesh pytest"
     },
     "./features/devcontainer-hybrid-auth": {}

@@ -15,6 +15,11 @@
       "default": true,
       "description": "Install the Antigravity CLI."
     },
+    "aptPackages": {
+      "type": "string",
+      "default": "shellcheck",
+      "description": "Space-separated Debian packages to install via apt-get."
+    },
     "pythonPackages": {
       "type": "string",
       "default": "numpy trimesh",
