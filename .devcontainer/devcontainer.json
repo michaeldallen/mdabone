@@ -1,5 +1,6 @@
 {
   "image": "mcr.microsoft.com/devcontainers/universal:6",
+  "updateSubmodules": true,
   "features": {
     "ghcr.io/devcontainers/features/git-lfs:1": {
       "version": "latest"
