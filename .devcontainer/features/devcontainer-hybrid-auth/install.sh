@@ -18,3 +18,5 @@ else
 fi
 EOF
 chmod +x /usr/local/bin/devcontainer-hybrid-auth
+
+#EOF
