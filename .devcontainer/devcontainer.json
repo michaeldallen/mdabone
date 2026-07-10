@@ -13,8 +13,8 @@
     }
   },
 
-  // Triggers the environment detection script upon container creation
-  "postCreateCommand": "./.devcontainer/setup-git.sh",
+  // Triggers environment detection, then updates submodules after git URL rules are set
+  "postCreateCommand": "./.devcontainer/setup-git.sh && git submodule sync --recursive && git submodule update --init --recursive",
 
   // Customizes your VS Code terminal settings inside the Codespace
   "customizations": {
@@ -30,13 +30,14 @@
     "vscode": {
       "extensions": [
         "github.vscode-github-actions",
-        "me-dutour-mathieu.vscode-github-actions",
-        "omartawfik.github-actions-vscode",
         "ms-azuretools.vscode-containers",
         "ms-vscode-remote.remote-containers",
         "ms-vscode.makefile-tools"
       ],
       "settings": {
+        "git.autofetch": true,
+        "git.detectSubmodules": true,
+        "git.submoduleLimit": 10,
         // Ensures your terminal looks for binaries in local user folders
         "terminal.integrated.env.linux": {
           "PATH": "${env:PATH}:${userHome}/.local/bin"
