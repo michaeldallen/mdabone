@@ -28,4 +28,6 @@ fi
 if [ -n "${PYTHON_PACKAGES}" ] && command -v python3 >/dev/null 2>&1; then
   python3 -m pip install --upgrade pip
   python3 -m pip install ${PYTHON_PACKAGES}
-fi  
+fi
+
+#EOF
