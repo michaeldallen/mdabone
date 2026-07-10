@@ -10,13 +10,13 @@
     },
     "./features/mdabone-support": {
       "pythonPackages": "numpy trimesh pytest"
-    }
+    },
+    "./features/devcontainer-hybrid-auth": {}
   },
 
-  // Triggers environment detection, then updates submodules after git URL rules are set
-  "postCreateCommand": "./.devcontainer/setup-git.sh && git submodule sync --recursive && git submodule update --init --recursive",
+  // Configure repository URL auth behavior after the workspace is created.
+  "postCreateCommand": "devcontainer-hybrid-auth",
 
-  // Customizes your VS Code terminal settings inside the Codespace
   "customizations": {
     "codespaces": {
       "repositories": {
