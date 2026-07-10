@@ -62,18 +62,18 @@ Gently fold the seared salmon cubes (and any juices left on the plate) back into
 ## 📊 Cooking Workflow (Parallel Tracks)
 
 ```mermaid
-%%{init: {"flowchart": {"htmlLabels": false}} }%%
+%%{init: {"flowchart": {"htmlLabels": false, "padding": 12, "diagramPadding": 12, "nodeSpacing": 36, "rankSpacing": 44, "useMaxWidth": false}} }%%
 graph TD
-    classDef default fill:#ffffff,stroke:#000000,stroke-width:2px,color:#000000;
-    classDef critical fill:#ffffff,stroke:#000000,stroke-width:4px,color:#000000;
+    classDef default fill:#ffffff,stroke:#000000,stroke-width:1.5px,color:#000000;
+    classDef critical fill:#ffffff,stroke:#000000,stroke-width:3px,color:#000000;
 
-    PREP["PRE-COOK STEP:\nCube salmon, dice onion, mince garlic"]
+    PREP["PRE-COOK STEP:\nCube salmon\nDice onion, mince garlic"]
     SEAR["1. SEAR SALMON CUBES\nMedium-high heat, 2 mins.\nRemove to plate immediately"]
     A_READY["2. KEEP READY STAGE\nSet seared salmon aside"]
     SAUTE["3. SAUTÉ AROMATICS\nMedium heat, 4-5 mins.\nCook onion, add garlic last 60s"]
     DAIRY["4. MEASURE EXTRA DAIRY\nZest/juice lemon.\nMeasure cream & parmesan"]
     PASTA["5. SIMMER PASTA\nAdd broth, water, pasta.\nSimmer covered 8-10 mins"]
-    SAUCE["6. BUILD EMULSION SAUCE\nStir in dairy, lemon, and parmesan\nover low heat until uniform"]
+    SAUCE["6. BUILD EMULSION SAUCE\nStir in dairy, lemon, and parmesan\nOver low heat until uniform"]
     FINISH["7. RESIDUAL STEAM FINISH\nFold salmon & spinach. Cover lid.\nTURN OFF HEAT. Rest 3 mins"]
 
     PREP --> SEAR
