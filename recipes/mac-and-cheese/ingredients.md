@@ -1,5 +1,7 @@
 # Ingredients List For Best Ever Macaroni Cheese (4 servings)
 
+[🖨 Printable version](https://michaeldallen.github.io/mdabone/recipes/mac-and-cheese/ingredients-print.html)
+
 ## Shopping
 - [ ] 50g Baguette
 - [ ] 350g Spiral or other short pasta
