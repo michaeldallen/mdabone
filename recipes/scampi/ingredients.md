@@ -1,6 +1,4 @@
-# Unified Ingredients List
-
-For Garlic Butter Shrimp Scampi (4 servings)
+# Ingredients List For Garlic Butter Shrimp Scampi (4 servings)
 
 ## Shopping
 - [ ] 2 units Broccoli
