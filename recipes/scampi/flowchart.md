@@ -1,8 +1,8 @@
-# Scampi Recipe Dependency Flowchart
+# Scampi Recipe Dependency Flowchart (Strict Compatibility)
 
 ```mermaid
 flowchart TD
-    A -- "Shared Prep" --> B["<span style='display:block; text-align:left'>- Mince garlic<br/>- Zest/quarter lemons<br/>- Chop broccoli</span>"]
+    A[Start: Garlic Butter\nShrimp Scampi] -- "Shared Prep" --> B[Prep tasks\n- Mince garlic\n- Zest/quarter lemons\n- Chop broccoli]
 
     B -- "Broccoli Track" --> C[Preheat oven to 450F]
     C --> D[Roast broccoli 12-15 min]
