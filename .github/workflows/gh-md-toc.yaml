@@ -1,0 +1,64 @@
+name: github-markdown-toc
+
+on:
+  workflow_dispatch:
+  push:
+    # branches: [main]
+    # paths: ['README.md']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      # Give the default GITHUB_TOKEN write permission to commit and push the
+      # added or changed files to the repository.
+      contents: write
+
+    env:
+      GH_TOC_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+
+      - name: Check out repository code
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - name: download github-markdown-toc
+        run: |
+          curl https://raw.githubusercontent.com/ekalinin/github-markdown-toc/master/gh-md-toc -o gh-md-toc
+          chmod a+x gh-md-toc
+          
+      - name: Update Table of Contents
+        run: |
+          find . -iname '*.md' -print | while read md ; do 
+            awk '/<!--ts-->/ {ts=NR} /<!--te-->/ {te=NR} END {exit !(ts && te && ts < te)}' ${md} || { echo "skipping ${md}" ; continue ; } 
+            echo "match: ${md} - updating TOC in ${md}" 
+            ./gh-md-toc --insert --no-backup --hide-footer ${md}
+          done
+
+      - name: Update omni-TOC in top-level README.md
+        run: |
+          echo "updating omni-TOC in README.md"
+          ./gh-md-toc $(find * -name README.md | fgrep -v doc/README.md | awk '{ print gsub("/","/"), $0 }' | sort -n | cut -d' ' -f2-) | fgrep -v "$(grep '^#[^#]' README.md | sed 's/^# *\(.*\)/[\1]/')" > toc.tmp
+          awk '/<!--ts-->/ {print;while((getline<"toc.tmp")>0)print;f=1;next} /<!--te-->/ {f=0;print;next} !f' README.md > README.md.tmp && mv README.md.tmp README.md
+          rm toc.tmp
+
+
+      - name: commit any changes
+        run: |
+          git diff 
+          if git diff --quiet; then
+            echo "No changes to commit" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "Changes made to the following files:" >> $GITHUB_STEP_SUMMARY
+            git diff --name-only | sed 's/^/* /' >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: tidy
+        run: |
+          rm gh-md-toc
+
+      - name: self-commit our changes
+        uses: stefanzweifel/git-auto-commit-action@4a55954c782fc1ea30b9056cd3e7a2b40ca8887d # v7.2.0
+        with:
+          commit_message: "chore: update markdown toc"
