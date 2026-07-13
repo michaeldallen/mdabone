@@ -17,7 +17,7 @@
       "autoClone": true
     }
   },
-  "postCreateCommand": "devcontainer-hybrid-auth",
+  "postCreateCommand": "bash ./.devcontainer/postCreateCommand.sh",
   "customizations": {
     "codespaces": {
       "repositories": {
