@@ -61,6 +61,89 @@ This file:
 >
 > Using a loop check (`[ ! -d /workspaces/$repo ]`) in the `postCreateCommand` ensures that if you rebuild or restart the Codespace, it won't crash trying to re-clone existing folders.
 
+
+##### AI: config file
+
+###### user
+
+I want a config file format that specifies:
+* "owner": the person or entity who owns/controls the repo
+* "repo": the name of the repository 
+* "permissions": permissions to this repo afforded to the devcontainer 
+
+requirements:
+* the file format is jsonc
+* there may be zero or more owner secions
+* each owner section may have zero or more repository sections
+* each repository may have a permissions section
+* permissions may be specified at each section level: top/global, owner, repo
+
+###### ai
+
+Recommended model for this config is a three-level hierarchy with optional permissions at each level:
+
+1. Global/top level defaults
+2. Owner sections
+3. Repository sections under each owner
+
+Each lower level inherits from the level above it and can override specific permission keys.
+
+Proposed JSONC shape:
+
+```jsonc
+{
+  // Optional defaults applied to all owners/repos unless overridden.
+  "permissions": {
+    "contents": "read",
+    "pull-requests": "read"
+  },
+
+  // Zero or more owner sections.
+  "owners": [
+    {
+      "owner": "michaeldallen",
+
+      // Optional owner-level overrides/defaults.
+      "permissions": {
+        "contents": "write"
+      },
+
+      // Zero or more repository sections.
+      "repos": [
+        {
+          "repo": "mdabone",
+
+          // Optional repo-level overrides.
+          "permissions": {
+            "pull-requests": "write"
+          }
+        },
+        {
+          "repo": "mda"
+        }
+      ]
+    }
+  ]
+}
+```
+
+Notes and behavior:
+
+1. `owners` may be omitted or empty.
+2. Each owner `repos` array may be omitted or empty.
+3. `permissions` is optional at global, owner, and repo levels.
+4. Effective repo permissions are computed as: global + owner + repo, where later levels override earlier keys.
+5. If a repo omits `permissions`, it inherits owner/global values.
+6. If an owner omits `permissions`, repos under that owner inherit only global values unless repo-level overrides are provided.
+
+Why this shape works for your requirements:
+
+1. Supports zero or more owners naturally through `owners: []`.
+2. Supports zero or more repos per owner through `repos: []`.
+3. Supports optional permissions at all three scopes.
+4. Maps cleanly to generated Codespaces `customizations.codespaces.repositories` entries during build/render.
+
+
 ---
 
 ### Step 3: Create the VS Code Workspace Configuration
