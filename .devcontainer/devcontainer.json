@@ -18,14 +18,19 @@
   "customizations": {
     "codespaces": {
       "repositories": {
-        "michaeldallen/mda": {
+        "michaeldallen/3d": {
           "permissions": {
             "contents": "write"
           }
         },
-        "michaeldallen/mdabone": {
+        "michaeldallen/libmose": {
           "permissions": {
-            "contents": "read"
+            "contents": "write"
+          }
+        },
+        "michaeldallen/mda": {
+          "permissions": {
+            "contents": "write"
           }
         }
       }
