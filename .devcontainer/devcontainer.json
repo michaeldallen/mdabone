@@ -12,9 +12,12 @@
       "aptPackages": "shellcheck",
       "pythonPackages": "numpy trimesh pytest"
     },
-    "./features/devcontainer-hybrid-auth": {}
+    "./features/devcontainer-hybrid-auth": {},
+    "./features/workspace-support": {
+      "autoClone": true
+    }
   },
-  "postCreateCommand": "devcontainer-hybrid-auth && .devcontainer/setup-workspace.sh",
+  "postCreateCommand": "devcontainer-hybrid-auth",
   "customizations": {
     "codespaces": {
       "repositories": {

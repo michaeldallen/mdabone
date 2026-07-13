@@ -1,0 +1,14 @@
+{
+  "id": "workspace-support",
+  "version": "1.0.0",
+  "name": "Workspace Support",
+  "description": "Clones secondary repositories listed in devcontainer customizations into the workspace",
+  "documentationURL": "https://github.com/michaeldallen/mdabone/tree/main/.devcontainer/features/workspace-support",
+  "options": {
+    "autoClone": {
+      "type": "boolean",
+      "description": "Automatically clone repositories from customizations.codespaces.repositories",
+      "default": true
+    }
+  }
+}
