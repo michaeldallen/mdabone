@@ -143,6 +143,61 @@ Why this shape works for your requirements:
 3. Supports optional permissions at all three scopes.
 4. Maps cleanly to generated Codespaces `customizations.codespaces.repositories` entries during build/render.
 
+###### ai: tooling notes
+
+Converter script:
+
+`ai/projects/codespaces-workspaces/tools/jsonc_to_codespaces_repos.py`
+
+Purpose:
+
+1. Reads the JSONC config format above.
+2. Applies permission inheritance: global + owner + repo (later scope overrides earlier scope).
+3. Emits a paste-ready JSON stanza for Codespaces `repositories`.
+
+CLI examples:
+
+1. Output `{ "repositories": { ... } }` (default):
+
+  `python3 ai/projects/codespaces-workspaces/tools/jsonc_to_codespaces_repos.py path/to/repos.jsonc`
+
+2. Output full wrapper for top-level `devcontainer.json` paste:
+
+  `python3 ai/projects/codespaces-workspaces/tools/jsonc_to_codespaces_repos.py path/to/repos.jsonc --mode customizations`
+
+3. Output only a `"repositories": ...` fragment:
+
+  `python3 ai/projects/codespaces-workspaces/tools/jsonc_to_codespaces_repos.py path/to/repos.jsonc --mode fragment`
+
+Schema version behavior:
+
+1. Top-level `schemaVersion` is supported.
+2. If omitted, it defaults to `1`.
+3. Currently supported versions: `1`.
+4. Unsupported versions fail with a clear error.
+
+Duplicate repo handling:
+
+1. Default mode is strict failure on duplicate `owner/repo` entries.
+
+  `--on-duplicate fail`
+
+2. Optional override mode lets later entries replace earlier entries.
+
+  `--on-duplicate last-wins`
+
+Permission validation:
+
+1. Strict permission-value validation is enabled by default.
+2. Default allowed values: `read`, `write`, `none`.
+3. Disable strict validation when needed:
+
+  `--no-strict-permissions`
+
+4. Customize allowed values:
+
+  `--allowed-permission-values read,write,none`
+
 
 ---
 
