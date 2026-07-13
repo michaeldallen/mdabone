@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Convert a JSONC multi-owner repo config into a Codespaces repositories stanza.
+"""Convert JSONC repo config into a Codespaces repositories stanza.
 
-Input format (JSONC):
+Input format (JSONC), multi-owner schema:
 {
     "schemaVersion": 1,
   "permissions": { ... },
@@ -14,6 +14,16 @@ Input format (JSONC):
       ]
     }
   ]
+}
+
+Also supports legacy workspace-config schema:
+{
+    "owner": "owner-name",
+    "default_permissions": { ... },
+    "repositories": [
+        "repo-name",
+        { "name": "repo-name", "permissions": { ... } }
+    ]
 }
 
 Output format (JSON):
@@ -164,6 +174,69 @@ def build_repositories(
     allowed_permission_values: set[str],
     on_duplicate: str = "fail",
 ) -> dict[str, dict[str, dict[str, str]]]:
+    # Legacy single-owner schema support.
+    if "owners" not in config and "owner" in config and "repositories" in config:
+        owner_name = config.get("owner")
+        if not isinstance(owner_name, str) or not owner_name.strip():
+            raise SystemExit('Field "owner" must be a non-empty string.')
+
+        global_perms = _permissions_dict(
+            config.get("default_permissions"),
+            "global",
+            strict_permissions=strict_permissions,
+            allowed_permission_values=allowed_permission_values,
+        )
+
+        repos = config.get("repositories", [])
+        if repos is None:
+            repos = []
+        if not isinstance(repos, list):
+            raise SystemExit('Field "repositories" must be an array.')
+
+        repositories: dict[str, dict[str, dict[str, str]]] = {}
+        for repo_item in repos:
+            repo_name: str
+            repo_perms_raw: Any = None
+
+            if isinstance(repo_item, str):
+                repo_name = repo_item
+            elif isinstance(repo_item, dict):
+                repo_name_raw = repo_item.get("name")
+                if not isinstance(repo_name_raw, str) or not repo_name_raw.strip():
+                    raise SystemExit(
+                        'Each repository object must include a non-empty string "name".'
+                    )
+                repo_name = repo_name_raw
+                repo_perms_raw = repo_item.get("permissions")
+            else:
+                raise SystemExit(
+                    'Each "repositories" item must be a string or an object with "name".'
+                )
+
+            if not repo_name.strip():
+                raise SystemExit('Repository name must be a non-empty string.')
+
+            repo_perms = _permissions_dict(
+                repo_perms_raw,
+                f'repo "{owner_name}/{repo_name}"',
+                strict_permissions=strict_permissions,
+                allowed_permission_values=allowed_permission_values,
+            )
+
+            effective_perms = {}
+            effective_perms.update(global_perms)
+            effective_perms.update(repo_perms)
+
+            repo_key = f"{owner_name}/{repo_name}"
+            if repo_key in repositories and on_duplicate == "fail":
+                raise SystemExit(
+                    f'Duplicate repository entry found for "{repo_key}". '
+                    "Use --on-duplicate last-wins to allow overriding."
+                )
+            repositories[repo_key] = {"permissions": effective_perms}
+
+        return repositories
+
     global_perms = _permissions_dict(
         config.get("permissions"),
         "global",

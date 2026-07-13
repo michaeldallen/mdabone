@@ -203,3 +203,35 @@ def test_schema_version_defaults_to_1_when_omitted(tmp_path: Path) -> None:
     assert result.returncode == 0, result.stderr
     payload = json.loads(result.stdout)
     assert "michaeldallen/mdabone" in payload["repositories"]
+
+
+def test_legacy_workspace_config_shape_is_supported(tmp_path: Path) -> None:
+    config = tmp_path / "workspace-config.json"
+    write_file(
+        config,
+        """
+        {
+          "owner": "michaeldallen",
+          "default_permissions": { "contents": "write" },
+          "repositories": [
+            "mda",
+            { "name": "libmose" },
+            { "name": "3d", "permissions": { "contents": "read" } }
+          ]
+        }
+        """.strip(),
+    )
+
+    result = run_tool(config)
+
+    assert result.returncode == 0, result.stderr
+    payload = json.loads(result.stdout)
+    assert payload["repositories"]["michaeldallen/mda"]["permissions"] == {
+        "contents": "write"
+    }
+    assert payload["repositories"]["michaeldallen/libmose"]["permissions"] == {
+        "contents": "write"
+    }
+    assert payload["repositories"]["michaeldallen/3d"]["permissions"] == {
+        "contents": "read"
+    }

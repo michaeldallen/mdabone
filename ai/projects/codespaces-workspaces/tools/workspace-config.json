@@ -1,0 +1,16 @@
+{
+  // The owner (GitHub username or organization) of the repositories
+  "owner": "michaeldallen",
+
+  // Default permissions applied to repositories unless overridden
+  "default_permissions": {
+    "contents": "write"
+  },
+
+  // List of repositories to configure and clone
+  "repositories": [
+    "mda",
+    "libmose",
+    "3d"
+  ]
+}
