@@ -1,7 +1,7 @@
 PYTHON ?= python3
 PYTEST ?= $(PYTHON) -m pytest
-CONVERTER_TEST_PATH ?= ai/projects/codespaces-workspaces/tools/tests
-VENV_DIR ?= .venv
+CONVERTER_TEST_PATH ?= tests
+VENV_DIR ?= venv.pytest
 VENV_PYTHON := $(VENV_DIR)/bin/python
 
 .PHONY: venv test test-converter

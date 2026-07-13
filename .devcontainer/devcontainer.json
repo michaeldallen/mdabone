@@ -14,16 +14,18 @@
     },
     "./features/devcontainer-hybrid-auth": {}
   },
-
-  // Configure repository URL auth behavior after the workspace is created.
-  "postCreateCommand": "devcontainer-hybrid-auth",
-
+  "postCreateCommand": "devcontainer-hybrid-auth && .devcontainer/setup-workspace.sh",
   "customizations": {
     "codespaces": {
       "repositories": {
         "michaeldallen/mda": {
           "permissions": {
             "contents": "write"
+          }
+        },
+        "michaeldallen/mdabone": {
+          "permissions": {
+            "contents": "read"
           }
         }
       }
@@ -39,7 +41,6 @@
         "git.autofetch": true,
         "git.detectSubmodules": true,
         "git.submoduleLimit": 10,
-        // Ensures your terminal looks for binaries in local user folders
         "terminal.integrated.env.linux": {
           "PATH": "${env:PATH}:${userHome}/.local/bin"
         }
