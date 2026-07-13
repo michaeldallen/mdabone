@@ -6,6 +6,28 @@ set -e
 
 FEATURE_AUTO_CLONE="${DEVCONTAINER_FEATURE_WORKSPACE_SUPPORT_AUTOCLONE:-true}"
 
+# Ensure github.com is trusted for SSH clones to avoid interactive fingerprint prompts.
+ensure_github_known_host() {
+    local ssh_dir="${HOME}/.ssh"
+    local known_hosts_file="${ssh_dir}/known_hosts"
+
+    mkdir -p "${ssh_dir}"
+    chmod 700 "${ssh_dir}" || true
+    touch "${known_hosts_file}"
+    chmod 600 "${known_hosts_file}" || true
+
+    if ssh-keygen -F github.com -f "${known_hosts_file}" >/dev/null 2>&1; then
+        return 0
+    fi
+
+    echo "🔐 Adding github.com SSH host keys to known_hosts..."
+    if ssh-keyscan -H github.com >> "${known_hosts_file}" 2>/dev/null; then
+        echo "✓ Added github.com host keys"
+    else
+        echo "⚠ Could not pre-load github.com host keys. Clone may prompt for fingerprint."
+    fi
+}
+
 # Find devcontainer.json in common locations
 find_devcontainer_json() {
     local devcontainer_file
@@ -86,6 +108,9 @@ main() {
     fi
     
     echo "📍 Using devcontainer config: ${devcontainer_json}"
+
+    # Preload github.com host keys so git@github.com clones are non-interactive.
+    ensure_github_known_host
     
     # Extract repositories
     local repositories
@@ -103,9 +128,9 @@ main() {
     while IFS= read -r repo; do
         if [[ -n "${repo}" ]]; then
             if clone_repository "${repo}"; then
-                ((clone_count++))
+                clone_count=$((clone_count + 1))
             else
-                ((fail_count++))
+                fail_count=$((fail_count + 1))
             fi
         fi
     done <<< "${repositories}"
