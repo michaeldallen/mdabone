@@ -2,7 +2,7 @@
   "id": "devcontainer-hybrid-auth",
   "version": "1.0.0",
   "name": "Devcontainer Hybrid Auth",
-  "documentationURL": "https://github.com/michaeldallen/mdabone/.devcontainer/features/devcontainer-hybrid-auth",
+  "documentationURL": "https://github.com/michaeldallen/mdabone/tree/main/.devcontainer/features/devcontainer-hybrid-auth",
   "description": "Installs a helper command that configures git URL rewriting for Codespaces vs local Docker auth.",
   "installsAfter": [
     "ghcr.io/devcontainers/features/common-utils"
