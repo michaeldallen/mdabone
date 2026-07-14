@@ -23,21 +23,21 @@
       "repositories": {
         "michaeldallen/3d": {
           "permissions": {
-            "contents": "read",
+            "contents": "write",
             "pull_requests": "write",
             "issues": "write"
           }
         },
         "michaeldallen/libmose": {
           "permissions": {
-            "contents": "read",
+            "contents": "write",
             "pull_requests": "write",
             "issues": "write"
           }
         },
         "michaeldallen/mda": {
           "permissions": {
-            "contents": "read",
+            "contents": "write",
             "pull_requests": "write",
             "issues": "write"
           }
