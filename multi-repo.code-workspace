@@ -1,0 +1,23 @@
+{
+  "folders": [
+    {
+      "name": "Hub Configuration",
+      "path": "."
+    },
+    {
+      "name": "mda",
+      "path": "../mda"
+    },
+    {
+      "name": "libmose",
+      "path": "../libmose"
+    },
+    {
+      "name": "3d",
+      "path": "../3d"
+    }
+  ],
+  "settings": {
+    "git.autorefresh": true
+  }
+}
