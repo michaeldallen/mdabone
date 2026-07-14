@@ -4,14 +4,14 @@
     "ghcr.io/devcontainers/features/git-lfs:1": {
       "version": "latest"
     },
-    "ghcr.io/devcontainers/features/python:1": {
-      "version": "3.14",
-      "installTools": false
-    },
-    "./features/mdabone-support": {
-      "aptPackages": "shellcheck",
-      "pythonPackages": "numpy trimesh pytest"
-    },
+//    "ghcr.io/devcontainers/features/python:1": {
+//      "version": "3.14",
+//      "installTools": false
+//    },
+//    "./features/mdabone-support": {
+//      "aptPackages": "shellcheck",
+//      "pythonPackages": "numpy trimesh pytest"
+//    },
     "./features/devcontainer-hybrid-auth": {},
     "./features/workspace-support": {
       "autoClone": true
@@ -22,20 +22,6 @@
     "codespaces": {
       "repositories": {
         "michaeldallen/3d": {
-          "permissions": {
-            "contents": "write",
-            "pull_requests": "write",
-            "issues": "write"
-          }
-        },
-        "michaeldallen/libmose": {
-          "permissions": {
-            "contents": "write",
-            "pull_requests": "write",
-            "issues": "write"
-          }
-        },
-        "michaeldallen/mda": {
           "permissions": {
             "contents": "write",
             "pull_requests": "write",
