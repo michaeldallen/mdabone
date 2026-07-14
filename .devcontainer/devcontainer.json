@@ -24,19 +24,19 @@
         "michaeldallen/3d": {
           "permissions": {
             "contents": "write",
-            "pull-requests": "read"
+            "pull-requests": "write"
           }
         },
         "michaeldallen/libmose": {
           "permissions": {
             "contents": "write",
-            "pull-requests": "read"
+            "pull-requests": "write"
           }
         },
         "michaeldallen/mda": {
           "permissions": {
             "contents": "write",
-            "pull-requests": "read"
+            "pull-requests": "write"
           }
         }
       }
