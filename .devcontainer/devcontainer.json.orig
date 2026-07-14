@@ -1,0 +1,50 @@
+{
+  "image": "mcr.microsoft.com/devcontainers/universal:6",
+  // "features": {
+  //   "ghcr.io/devcontainers/features/git-lfs:1": {
+  //     "version": "latest"
+  //   },
+//    "ghcr.io/devcontainers/features/python:1": {
+//      "version": "3.14",
+//      "installTools": false
+//    },
+//    "./features/mdabone-support": {
+//      "aptPackages": "shellcheck",
+//      "pythonPackages": "numpy trimesh pytest"
+//    },
+    "./features/devcontainer-hybrid-auth": {},
+    // "./features/workspace-support": {
+    //   "autoClone": true
+    // }
+  },
+  // "postCreateCommand": "bash ./.devcontainer/postCreateCommand.sh",
+  "customizations": {
+    "codespaces": {
+      "repositories": {
+        "michaeldallen/3d": {
+          "permissions": {
+            "contents": "write",
+            "pull_requests": "write",
+            "issues": "write"
+          }
+        }
+      }
+    },
+    "vscode": {
+      "extensions": [
+        "github.vscode-github-actions",
+        "ms-azuretools.vscode-containers",
+        "ms-vscode-remote.remote-containers",
+        "ms-vscode.makefile-tools"
+      ],
+      "settings": {
+        "git.autofetch": true,
+        "git.detectSubmodules": true,
+        "git.submoduleLimit": 10,
+        "terminal.integrated.env.linux": {
+          "PATH": "${env:PATH}:${userHome}/.local/bin"
+        }
+      }
+    }
+  }
+}
