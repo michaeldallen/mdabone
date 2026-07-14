@@ -30,25 +30,18 @@ ensure_github_known_host() {
 
 # Find devcontainer.json in common locations
 find_devcontainer_json() {
+    local repo_root
     local devcontainer_file
 
-    # Try .devcontainer/devcontainer.json first (most common)
-    if [[ -f "/workspaces/mdabone/.devcontainer/devcontainer.json" ]]; then
-        echo "/workspaces/mdabone/.devcontainer/devcontainer.json"
-        return 0
+    # Get the repository root
+    if ! repo_root=$(git rev-parse --show-toplevel 2>/dev/null); then
+        return 1
     fi
 
-    # Search in /workspaces root for devcontainer.json
-    for dir in /workspaces/*/; do
-        if [[ -f "${dir}.devcontainer/devcontainer.json" ]]; then
-            echo "${dir}.devcontainer/devcontainer.json"
-            return 0
-        fi
-    done
-
-    # Fallback to current directory structure
-    if [[ -f ".devcontainer/devcontainer.json" ]]; then
-        echo ".devcontainer/devcontainer.json"
+    devcontainer_file="${repo_root}/.devcontainer/devcontainer.json"
+    
+    if [[ -f "${devcontainer_file}" ]]; then
+        echo "${devcontainer_file}"
         return 0
     fi
 
