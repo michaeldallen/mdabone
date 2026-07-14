@@ -1,34 +1,31 @@
 {
   "image": "mcr.microsoft.com/devcontainers/universal:6",
-  "./features/devcontainer-hybrid-auth": {},
-},
-"customizations": {
-  "codespaces": {
-    "repositories": {
-      "michaeldallen/3d": {
-        "permissions": {
-          "contents": "write",
-          "pull_requests": "write",
-          "issues": "write"
+  "features": {
+    "./features/devcontainer-hybrid-auth": {}
+  },
+  // "postCreateCommand": "bash ./.devcontainer/postCreateCommand.sh",
+  "customizations": {
+    "codespaces": {
+      "repositories": {
+        "michaeldallen/3d": {
+          "permissions": {
+            "contents": "write",
+            "pull_requests": "write",
+            "issues": "write"
+          }
+        }
+      }
+    },
+    "vscode": {
+      "extensions": [],
+      "settings": {
+        "git.autofetch": true,
+        "git.detectSubmodules": true,
+        "git.submoduleLimit": 10,
+        "terminal.integrated.env.linux": {
+          "PATH": "${env:PATH}:${userHome}/.local/bin"
         }
       }
     }
-  },
-  "vscode": {
-    "extensions": [
-      "github.vscode-github-actions",
-      "ms-azuretools.vscode-containers",
-      "ms-vscode-remote.remote-containers",
-      "ms-vscode.makefile-tools"
-    ],
-    "settings": {
-      "git.autofetch": true,
-      "git.detectSubmodules": true,
-      "git.submoduleLimit": 10,
-      "terminal.integrated.env.linux": {
-        "PATH": "${env:PATH}:${userHome}/.local/bin"
-      }
-    }
   }
-}
 }
