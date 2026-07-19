@@ -5,14 +5,14 @@ flowchart TD
     A["Start\nGather ingredients and tools"]
 
     A -- "Salmon Track" --> B["Cube salmon\nSeason with salt, pepper, garlic powder"]
-    B -- "Salmon Track" --> C["Sear in olive oil\nMedium-high heat, 2 min"]
-    C -- "Salmon Track" --> D["Set salmon aside\nKeep undercooked for finish"]
+    B --> C["Sear in olive oil\nMedium-high heat, 2 min"]
+    C --> D["Set salmon aside\nKeep undercooked for finish"]
 
     A -- "Aromatics Track" --> E["Dice onion, mince garlic\nPrep before heating"]
-    E -- "Aromatics Track" --> F["Saute onion then garlic\nMedium heat, 4 to 5 min total"]
+    E --> F["Saute onion then garlic\nMedium heat, 4 to 5 min total"]
 
     A -- "Pasta Track" --> G["Add broth, water, pasta\nBring to boil"]
-    G -- "Pasta Track" --> H["Cover and simmer\nLow heat, 8 to 10 min"]
+    G --> H["Cover and simmer\nLow heat, 8 to 10 min"]
 
     A -- "Dairy Track" --> I["Zest and juice lemon\nMeasure cream and Parmesan"]
 
@@ -21,6 +21,6 @@ flowchart TD
     H -- "Pasta Track" --> J
     I -- "Dairy Track" --> J
 
-    J -- "Finish Track" --> K["Steam finish\nFold in salmon and spinach, heat off, rest 3 min"]
-    K -- "Finish Track" --> L["Serve"]
+    J --> K["Steam finish\nFold in salmon and spinach, heat off, rest 3 min"]
+    K --> L["Serve"]
 ```
