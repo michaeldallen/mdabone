@@ -1,5 +1,7 @@
 # Creamy Lemon Salmon Pasta Flowchart
 
+[🖨 Printable version](https://michaeldallen.github.io/mdabone/recipes/creamy-lemon-salmon/flowchart.html)
+
 ```mermaid
 flowchart TD
     A["Start\nGather ingredients and tools"]
