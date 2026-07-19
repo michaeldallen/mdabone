@@ -1,7 +1,7 @@
 # One-Pot Creamy Lemon Salmon Pasta
 > *Comforting, Rich, and Perfectly Balanced — Family-of-Four Large Print Edition*
 
-[🛒 Ingredients checklist](./ingredients.md) | [🖨 Printable ingredients](./ingredients.html) | [📊 Cooking flowchart](./flowchart.md)
+[🛒 Ingredients checklist](./ingredients.md) | [🖨 Printable ingredients](./ingredients.html) | [📊 Cooking flowchart](./flowchart.md) | [🖨 Printable flowchart](./flowchart.html)
 
 | Prep Time | Cook Time | Total Time | Servings |
 | :--- | :--- | :--- | :--- |
