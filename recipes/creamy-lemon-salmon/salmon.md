@@ -28,3 +28,11 @@ Keep the heat on low. Stir in 1/4 cup of heavy cream (or 2 tbsp cream cheese), t
 
 ### 6. Steam Finish
 Gently fold the seared salmon cubes (and any juices left on the plate) back into the pot, along with 2 cups of fresh baby spinach. Cover the pot with a tight-fitting lid, **TURN OFF THE HEAT COMPLETELY**, and let it rest for 3 minutes. The trapped residual steam will perfectly flake the salmon and wilt the spinach. Serve hot.
+
+
+
+# TRY THIS!
+
+add some halved cherry tomatos at/near the end for some zip
+
+have capers available for those who want them
