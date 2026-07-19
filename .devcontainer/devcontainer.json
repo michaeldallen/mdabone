@@ -3,7 +3,7 @@
   "features": {
     "./features/devcontainer-hybrid-auth": {}
   },
-  "postCreateCommand": "bash ./.devcontainer/run-postCreateCommand.sh",
+  "postCreateCommand": "bash ./.devcontainer/run-postCreateCommands.sh",
   "customizations": {
     "codespaces": {
       "repositories": {
