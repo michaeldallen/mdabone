@@ -4,12 +4,12 @@
 
 Always create a separate `ingredients.md` file alongside the recipe file. 
 
-Separate items into **Shopping** and **Pantry Essentials** sections, using checkbox list items (`- [ ]`).
+Create an **Ingredients** section, using checkbox list items (`- [ ]`).
 
-Also create a companion `ingredients-print.html` — a self-contained HTML file with clean print CSS (no nav, no chrome). Add a link to the GitHub Pages URL at the top of `ingredients.md`:
+Also create a companion `ingredients.html` — a self-contained HTML file with clean print CSS (no nav, no chrome). Add a link to the GitHub Pages URL at the top of `ingredients.md`:
 
 ```markdown
-[🖨 Printable version](https://michaeldallen.github.io/mdabone/recipes/<recipe-name>/ingredients-print.html)
+[🖨 Printable version](https://michaeldallen.github.io/mdabone/recipes/<recipe-name>/ingredients.html)
 ```
 
 The GitHub Pages URL pattern is `https://michaeldallen.github.io/mdabone/<path-to-file>`. Pages must be enabled on the repo (requires the repo to be public).
@@ -34,3 +34,16 @@ Design rules:
 
 - Keep node IDs short and sequential (A, B, C … or descriptive single words)
 
+## Icons 
+
+Use icons/emojis in headings.  
+
+Required icons:
+
+🍳 Cooking Steps
+🛒 Ingredients checklist link or section
+🖨 Printable ingredients link
+📊 Cooking flowchart link or section
+🧂 Pantry Essentials section (when present)
+🛠 Tools Needed section (when present)
+If content is split into companion files, preserve these icons in the main recipe links and in any remaining relevant section headings.
