@@ -14,6 +14,8 @@ Also create a companion `ingredients.html` — a self-contained HTML file with c
 
 The GitHub Pages URL pattern is `https://michaeldallen.github.io/mdabone/<path-to-file>`. Pages must be enabled on the repo (requires the repo to be public).
 
+Where there is a separate "Pantry Essentials" section, combine this with "Ingredients".  The separate "Pantry Essentials" section is from an earlier recipe format and is considered less useful that a unified ingredients list.
+
 
 
 ## Flowchart

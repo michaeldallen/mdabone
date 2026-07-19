@@ -1,8 +1,8 @@
 # Ingredients List For Garlic Butter Shrimp Scampi (4 servings)
 
-[🖨 Printable version](https://michaeldallen.github.io/mdabone/recipes/scampi/ingredients-print.html)
+[🖨 Printable version](https://michaeldallen.github.io/mdabone/recipes/scampi/ingredients.html)
 
-## Shopping
+## 🛒 Ingredients
 - [ ] 2 units Broccoli
 - [ ] 12 oz Spaghetti
 - [ ] 2 units Lemon
@@ -11,8 +11,6 @@
 - [ ] 6 tbsp Parmesan Cheese
 - [ ] 2 units Seafood Stock Concentrate
 - [ ] 1 tsp Chili Flakes
-
-## Pantry Essentials
 - [ ] 6 tbsp Butter
 - [ ] 2 tbsp Olive Oil
 - [ ] Kosher Salt

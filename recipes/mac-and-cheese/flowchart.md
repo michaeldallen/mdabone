@@ -1,5 +1,7 @@
 # Mac and Cheese Recipe Flowchart
 
+[🖨 Printable version](https://michaeldallen.github.io/mdabone/recipes/mac-and-cheese/flowchart.html)
+
 ```mermaid
 flowchart TD
     A[Start: Best Ever\nMacaroni Cheese]

@@ -1,27 +1,15 @@
 # Best Ever Macaroni Cheese
 > *BBC Good Food — Jennifer Joyce*
 
+[🛒 Ingredients checklist](./ingredients.md) | [🖨 Printable ingredients](./ingredients.html) | [📊 Cooking flowchart](./flowchart.md) | [🖨 Printable flowchart](./flowchart.html)
+
 | Prep Time | Cook Time | Total Time | Servings |
 | :--- | :--- | :--- | :--- |
 | 10 mins | 40 mins | 50 mins | 4 people |
 
 ---
 
-## Ingredients
-
-- 50g baguette, cut into small chunks
-- 2 tbsp butter, plus 1 tbsp melted
-- 350g spiral or other short pasta
-- 1 garlic clove, finely chopped
-- 1 tsp English mustard powder
-- 3 tbsp plain flour
-- 500ml whole milk
-- 250g vegetarian mature cheddar, grated
-- 50g parmesan (or vegetarian alternative), grated
-
----
-
-## Method
+## 🍳 Cooking Steps
 
 ### Step 1 — Make the croutons
 Heat the oven to 200C/180C fan/gas 6. Spread the baguette chunks over a baking sheet, drizzle with the melted butter and season. Bake for 6 mins until crisp, then set aside.
