@@ -24,7 +24,7 @@ Design rules:
 
 - Identify independent cooking tracks (e.g. pasta, sauce, croutons) and run them as **parallel vertical lanes** from a shared `Start` node
 
-- Label edges with the track name in quotes (e.g. `-- "Sauce Track" -->`)
+- Label edges with the track name in quotes (e.g. `-- "Sauce Track" -->`).  Only label the edges between splitting and converging nodes.
 
 - Each node should be a concise action with key details (time, temperature, technique) on a second line where helpful
 
