@@ -20,6 +20,22 @@ The GitHub Pages URL pattern is `https://michaeldallen.github.io/mdabone/<path-t
 
 Always create a separate `flowchart.md` file alongside the recipe file using a Mermaid `flowchart TD` diagram.
 
+Also create printable companions:
+
+- `flowchart.html` — a self-contained HTML file with clean print CSS (no nav, no chrome)
+- `flowchart.svg` — a rendered static image generated from the Mermaid source
+
+Add a printable link to the top of `flowchart.md`:
+
+```markdown
+[🖨 Printable version](https://michaeldallen.github.io/mdabone/recipes/<recipe-name>/flowchart.html)
+```
+
+In the main recipe page, include both links when flowchart content is split into companion files:
+
+- `📊 Cooking flowchart` -> `./flowchart.md`
+- `🖨 Printable flowchart` -> `./flowchart.html`
+
 Design rules:
 
 - Identify independent cooking tracks (e.g. pasta, sauce, croutons) and run them as **parallel vertical lanes** from a shared `Start` node
