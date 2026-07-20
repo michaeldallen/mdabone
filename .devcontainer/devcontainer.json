@@ -1,7 +1,9 @@
 {
   "image": "mcr.microsoft.com/devcontainers/universal:6",
   "features": {
-    "./features/devcontainer-hybrid-auth": {}
+    "./features/devcontainer-hybrid-auth": {},
+    "./features/workspace-support": {},
+    "./features/mdabone-support": {},
   },
   "postCreateCommand": "bash ./.devcontainer/run-postCreateCommands.sh",
   "customizations": {
