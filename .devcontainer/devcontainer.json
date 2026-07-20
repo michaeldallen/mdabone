@@ -13,6 +13,20 @@
             "pull_requests": "write",
             "issues": "write"
           }
+        },
+        "michaeldallen/mda": {
+          "permissions": {
+            "contents": "write",
+            "pull_requests": "write",
+            "issues": "write"
+          }
+        },
+        "michaeldallen/libmose": {
+          "permissions": {
+            "contents": "write",
+            "pull_requests": "write",
+            "issues": "write"
+          }
         }
       }
     },
