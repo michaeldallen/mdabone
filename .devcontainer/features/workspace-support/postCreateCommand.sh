@@ -86,6 +86,66 @@ extract_repositories() {
     jq -e -r '.customizations.codespaces.repositories | keys[]' "$devcontainer_json"
 }
 
+# Keep the workspace file in sync with configured repository list.
+sync_workspace_file() {
+        local repo_root="$1"
+        local repositories="$2"
+        local workspace_file="${repo_root}/multi-repo.code-workspace"
+        local temp_file
+        local root_repo_name
+
+        temp_file=$(mktemp)
+        root_repo_name="$(basename "${repo_root}")"
+
+        {
+                cat <<'EOF'
+{
+    "folders": [
+        {
+            "name": "Hub Configuration",
+            "path": "."
+        }
+EOF
+
+                while IFS= read -r repo_full_name; do
+                        local repo_name
+                        [[ -z "${repo_full_name}" ]] && continue
+                        repo_name="${repo_full_name##*/}"
+
+                        # Avoid duplicate folder entries if the primary repo is listed.
+                        [[ "${repo_name}" == "${root_repo_name}" ]] && continue
+
+                        cat <<EOF
+        ,{
+            "name": "${repo_name}",
+            "path": "../${repo_name}"
+        }
+EOF
+                done <<< "${repositories}"
+
+                cat <<'EOF'
+    ],
+    "settings": {
+        "git.autorefresh": true
+    }
+}
+EOF
+        } > "${temp_file}"
+
+        # Normalize formatting for stable diffs and readability.
+        jq . "${temp_file}" > "${temp_file}.formatted"
+        mv "${temp_file}.formatted" "${temp_file}"
+
+        if [[ -f "${workspace_file}" ]] && cmp -s "${temp_file}" "${workspace_file}"; then
+                rm -f "${temp_file}"
+                echo "✓ Workspace file already up to date: ${workspace_file}"
+                return 0
+        fi
+
+        mv "${temp_file}" "${workspace_file}"
+        echo "✓ Updated workspace file: ${workspace_file}"
+}
+
 # Clone a single repository
 clone_repository() {
     local repo_full_name="$1"  # e.g., "michaeldallen/mda"
@@ -136,11 +196,6 @@ clone_repository() {
 main() {
     echo "=== Workspace Support Feature ==="
 
-    if [[ "${FEATURE_AUTO_CLONE}" != "true" ]]; then
-        echo "Auto-clone disabled. Skipping repository cloning."
-        return 0
-    fi
-
     # Find devcontainer.json
     local devcontainer_json
     if ! devcontainer_json=$(find_devcontainer_json); then
@@ -165,6 +220,15 @@ main() {
 
     if [[ -z "${repositories}" ]]; then
         echo "ℹ No repositories found in customizations.codespaces.repositories"
+        sync_workspace_file "$(dirname "$(dirname "${devcontainer_json}")")" ""
+        return 0
+    fi
+
+    # Sync the workspace file before any cloning attempt.
+    sync_workspace_file "$(dirname "$(dirname "${devcontainer_json}")")" "${repositories}"
+
+    if [[ "${FEATURE_AUTO_CLONE}" != "true" ]]; then
+        echo "Auto-clone disabled. Skipping repository cloning."
         return 0
     fi
 

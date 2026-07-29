@@ -5,16 +5,16 @@
       "path": "."
     },
     {
-      "name": "mda",
-      "path": "../mda"
+      "name": "3d",
+      "path": "../3d"
     },
     {
       "name": "libmose",
       "path": "../libmose"
     },
     {
-      "name": "3d",
-      "path": "../3d"
+      "name": "mda",
+      "path": "../mda"
     }
   ],
   "settings": {
