@@ -2,7 +2,7 @@
 # Workspace Support post-create hook.
 # Reads customizations.codespaces.repositories and clones listed repositories into /workspaces/
 
-set -e
+set -euo pipefail
 
 FEATURE_AUTO_CLONE="${DEVCONTAINER_FEATURE_WORKSPACE_SUPPORT_AUTOCLONE:-true}"
 
@@ -48,19 +48,17 @@ find_devcontainer_json() {
     return 1
 }
 
-# Parse repositories using jq if available, otherwise grep/sed
+# Parse repositories using jq only (fail fast on any parse or schema error)
 extract_repositories() {
     local devcontainer_json="$1"
 
-    # Check if jq is available
-    if command -v jq &> /dev/null; then
-        # Use jq to extract owner/repo pairs
-        jq -r '.customizations.codespaces.repositories | keys[]' "$devcontainer_json" 2>/dev/null || true
-    else
-        # Fallback: use grep and sed to extract repository names
-        # Look for patterns like "michaeldallen/repo-name":
-        grep -o '"[^/]*\/[^\"]*"' "$devcontainer_json" 2>/dev/null | sed 's/"//g' || true
+    if ! command -v jq >/dev/null 2>&1; then
+        echo "✗ Error: jq is required to parse ${devcontainer_json}, but it is not installed." >&2
+        return 1
     fi
+
+    # Fail immediately if JSON is invalid or required path is missing.
+    jq -e -r '.customizations.codespaces.repositories | keys[]' "$devcontainer_json"
 }
 
 # Clone a single repository
@@ -107,7 +105,10 @@ main() {
 
     # Extract repositories
     local repositories
-    repositories=$(extract_repositories "${devcontainer_json}")
+    if ! repositories=$(extract_repositories "${devcontainer_json}"); then
+        echo "✗ Error: Failed to parse repositories from ${devcontainer_json}." >&2
+        return 1
+    fi
 
     if [[ -z "${repositories}" ]]; then
         echo "ℹ No repositories found in customizations.codespaces.repositories"
