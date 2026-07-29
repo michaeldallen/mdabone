@@ -28,6 +28,31 @@ ensure_github_known_host() {
     fi
 }
 
+# Warn (without failing) when local SSH auth to GitHub is not ready.
+check_local_ssh_auth() {
+    if [[ "${CODESPACES:-false}" == "true" ]]; then
+        return 0
+    fi
+
+    if ! command -v ssh >/dev/null 2>&1; then
+        echo "⚠ SSH client not found. Local SSH clone may fail."
+        return 0
+    fi
+
+    local ssh_output
+    ssh_output=$(ssh -T -o BatchMode=yes -o ConnectTimeout=5 git@github.com 2>&1 || true)
+
+    if [[ "${ssh_output}" == *"successfully authenticated"* ]]; then
+        echo "✓ Local SSH auth to GitHub looks good"
+        return 0
+    fi
+
+    echo "⚠ Local SSH auth to GitHub does not appear ready."
+    echo "  Expected for first-time setup, but SSH clones may fail."
+    echo "  Check: ssh-add -l"
+    echo "  Test:  ssh -T git@github.com"
+}
+
 # Find devcontainer.json in common locations
 find_devcontainer_json() {
     local repo_root
@@ -66,7 +91,14 @@ clone_repository() {
     local repo_full_name="$1"  # e.g., "michaeldallen/mda"
     local repo_name="${repo_full_name##*/}"  # Extract just the repo name after /
     local clone_path="/workspaces/${repo_name}"
-    local clone_url="git@github.com:${repo_full_name}.git"
+    local clone_url
+
+    # Codespaces authentication is token-based; prefer HTTPS there.
+    if [[ "${CODESPACES:-false}" == "true" ]]; then
+        clone_url="https://github.com/${repo_full_name}.git"
+    else
+        clone_url="git@github.com:${repo_full_name}.git"
+    fi
 
     if [[ -d "${clone_path}" ]]; then
         echo "✓ Repository ${repo_name} already exists at ${clone_path}"
@@ -74,6 +106,24 @@ clone_repository() {
     fi
 
     echo "📦 Cloning ${repo_full_name} into ${clone_path}..."
+
+    # Fail early with a clear message when the Codespaces token lacks access
+    # to a configured repository.
+    if [[ "${CODESPACES:-false}" == "true" ]] && [[ -n "${GITHUB_TOKEN:-}" ]]; then
+        local api_status
+        api_status=$(curl -sS -o /dev/null -w "%{http_code}" \
+            -H "Authorization: Bearer ${GITHUB_TOKEN}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${repo_full_name}" || true)
+
+        if [[ "${api_status}" != "200" ]]; then
+            echo "✗ Codespaces token cannot access ${repo_full_name} (HTTP ${api_status})."
+            echo "  Ensure customizations.codespaces.repositories includes ${repo_full_name},"
+            echo "  then recreate the codespace so GitHub can request/grant access."
+            return 1
+        fi
+    fi
+
     if git clone "${clone_url}" "${clone_path}"; then
         echo "✓ Successfully cloned ${repo_full_name}"
         return 0
@@ -100,8 +150,11 @@ main() {
 
     echo "📍 Using devcontainer config: ${devcontainer_json}"
 
-    # Preload github.com host keys so git@github.com clones are non-interactive.
-    ensure_github_known_host
+    # Preload github.com host keys only when SSH cloning may be used.
+    if [[ "${CODESPACES:-false}" != "true" ]]; then
+        ensure_github_known_host
+        check_local_ssh_auth
+    fi
 
     # Extract repositories
     local repositories

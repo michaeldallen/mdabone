@@ -47,7 +47,10 @@ The feature is configured in `.devcontainer/devcontainer.json`:
 
 ## Implementation Notes
 
-- Uses `jq` if available for JSON parsing; falls back to grep/sed
-- Cloning is done over HTTPS (compatible with Codespaces authentication)
-- Each repository is cloned into a directory named after the repository (e.g., `michaeldallen/mda` → `/workspaces/mda`)
+- Uses `jq` for JSON parsing and fails fast if parsing fails
+- In Codespaces, cloning is done over HTTPS to use `GITHUB_TOKEN` auth
+- Outside Codespaces, cloning uses SSH (`git@github.com:`) for local `ssh-agent` workflows
+- In Codespaces, each configured repo is preflight-checked via GitHub API to surface missing token grants clearly
+- Outside Codespaces, a startup SSH preflight warning is shown if `git@github.com` auth does not appear ready
+- Each repository is cloned into a directory named after the repository (e.g., `michaeldallen/mda` -> `/workspaces/mda`)
 - Feature output uses emoji indicators for clarity (✓ = success, ✗ = failure, 📦 = cloning, etc.)
