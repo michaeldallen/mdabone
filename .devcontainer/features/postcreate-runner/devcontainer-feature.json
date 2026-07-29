@@ -1,0 +1,10 @@
+{
+  "id": "postcreate-runner",
+  "version": "1.0.0",
+  "name": "Post-create Hooks Runner",
+  "description": "Installs a reusable runner that executes self-registered feature post-create hooks.",
+  "documentationURL": "https://github.com/michaeldallen/mdabone/tree/main/.devcontainer/features/postcreate-runner",
+  "installsAfter": [
+    "ghcr.io/devcontainers/features/common-utils"
+  ]
+}

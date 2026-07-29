@@ -1,11 +1,12 @@
 {
   "image": "mcr.microsoft.com/devcontainers/universal:6",
   "features": {
+    "./features/postcreate-runner": {},
     "./features/devcontainer-hybrid-auth": {},
     "./features/workspace-support": {},
     "./features/mdabone-support": {}
   },
-  "postCreateCommand": "bash ./.devcontainer/run-postCreateCommands.sh",
+  "postCreateCommand": "devcontainer-run-postcreate-hooks",
   "customizations": {
     "codespaces": {
       "repositories": {

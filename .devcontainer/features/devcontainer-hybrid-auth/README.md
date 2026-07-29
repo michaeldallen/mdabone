@@ -1,6 +1,16 @@
 # Devcontainer Hybrid Auth
 
-This feature installs `devcontainer-hybrid-auth`, a helper that configures GitHub auth URL behavior differently for GitHub Codespaces vs local Docker development.
+This feature self-registers a post-create hook that configures GitHub auth URL behavior differently for GitHub Codespaces vs local Docker development.
+
+## Hook registration
+
+During feature install, the script registers:
+
+- `/usr/local/share/devcontainer-postcreate.d/20-devcontainer-hybrid-auth.sh`
+
+The hook is executed by the reusable post-create runner command:
+
+- `devcontainer-run-postcreate-hooks`
 
 > Comment: We changed from `--local` to `--global` in 2026-07 because `--local` only affects an existing repository, while `git clone` needs the rewrite before the destination repo exists. Using `--global` makes SSH-to-HTTPS rewriting apply during clone in Codespaces.
 

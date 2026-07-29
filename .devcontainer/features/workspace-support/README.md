@@ -13,10 +13,11 @@ This feature:
 
 ## How It Works
 
-1. The feature runs during devcontainer build/initialization
-2. Parses `devcontainer.json` to find `customizations.codespaces.repositories`
-3. For each repository, clones it to `/workspaces/<repo-name>` if not already present
-4. Provides clear logging of cloning status
+1. During feature install, this feature self-registers a post-create hook in `/usr/local/share/devcontainer-postcreate.d/`.
+2. At container post-create time, the reusable `devcontainer-run-postcreate-hooks` command executes registered hooks.
+3. This hook parses `devcontainer.json` to find `customizations.codespaces.repositories`.
+4. For each repository, it clones to `/workspaces/<repo-name>` if not already present.
+5. It provides clear logging of cloning status.
 
 ## Usage
 
@@ -25,10 +26,12 @@ The feature is configured in `.devcontainer/devcontainer.json`:
 ```json
 {
   "features": {
+    "./features/postcreate-runner": {},
     "./features/workspace-support": {
       "autoClone": true
     }
   },
+  "postCreateCommand": "devcontainer-run-postcreate-hooks",
   "customizations": {
     "codespaces": {
       "repositories": {
@@ -47,6 +50,7 @@ The feature is configured in `.devcontainer/devcontainer.json`:
 
 ## Implementation Notes
 
+- Registers `30-workspace-support.sh` into `/usr/local/share/devcontainer-postcreate.d/`
 - Uses `jq` for JSON parsing and fails fast if parsing fails
 - In Codespaces, cloning is done over HTTPS to use `GITHUB_TOKEN` auth
 - Outside Codespaces, cloning uses SSH (`git@github.com:`) for local `ssh-agent` workflows

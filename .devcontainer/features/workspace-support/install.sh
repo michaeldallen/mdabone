@@ -1,7 +1,14 @@
 #!/usr/bin/env bash
 # Workspace Support Feature install hook.
-# Workspace cloning now runs from postCreateCommand.sh.
+# Registers a reusable post-create hook script.
 
-set -e
+set -euo pipefail
 
-echo "Workspace Support install complete."
+hooks_dir="/usr/local/share/devcontainer-postcreate.d"
+source_hook="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/postCreateCommand.sh"
+target_hook="${hooks_dir}/30-workspace-support.sh"
+
+mkdir -p "${hooks_dir}"
+install -m 755 "${source_hook}" "${target_hook}"
+
+echo "Workspace Support hook registered: ${target_hook}"
