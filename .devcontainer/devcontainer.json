@@ -17,6 +17,13 @@
             "issues": "write"
           }
         },
+        "michaeldallen/recipes": {
+          "permissions": {
+            "contents": "write",
+            "pull_requests": "write",
+            "issues": "write"
+          }
+        },
         "michaeldallen/libmose": {
           "permissions": {
             "contents": "write",
