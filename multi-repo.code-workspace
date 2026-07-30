@@ -15,6 +15,10 @@
     {
       "name": "mda",
       "path": "../mda"
+    },
+    {
+      "name": "recipes",
+      "path": "../recipes"
     }
   ],
   "settings": {
