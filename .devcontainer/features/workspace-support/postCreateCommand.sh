@@ -102,7 +102,7 @@ sync_workspace_file() {
 {
     "folders": [
         {
-            "name": "Hub Configuration",
+            "name": "mdabone (MRWC Hub)",
             "path": "."
         }
 EOF
