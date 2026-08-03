@@ -7,7 +7,7 @@ A devcontainer feature that automatically clones repositories listed in `devcont
 This feature:
 
 - Reads repository definitions from `customizations.codespaces.repositories`
-- Clones each repository into `/workspaces/`
+- Clones each repository into `~/workspaces/`
 - Updates `multi-repo.code-workspace` so it always matches configured repositories
 - Is idempotent (won't re-clone if already exists)
 - Works in both local Dev Containers and GitHub Codespaces
@@ -18,7 +18,7 @@ This feature:
 2. At container post-create time, the reusable `devcontainer-run-postcreate-hooks` command executes registered hooks.
 3. This hook parses `devcontainer.json` to find `customizations.codespaces.repositories`.
 4. It rewrites `multi-repo.code-workspace` to include the primary repo plus each configured repository.
-5. For each repository, it clones to `/workspaces/<repo-name>` if not already present.
+5. For each repository, it clones to `~/workspaces/` if not already present.
 6. It provides clear logging of sync and cloning status.
 
 ## Usage
@@ -59,5 +59,6 @@ The feature is configured in `.devcontainer/devcontainer.json`:
 - Outside Codespaces, cloning uses SSH (`git@github.com:`) for local `ssh-agent` workflows
 - In Codespaces, each configured repo is preflight-checked via GitHub API to surface missing token grants clearly
 - Outside Codespaces, a startup SSH preflight warning is shown if `git@github.com` auth does not appear ready
-- Each repository is cloned into a directory named after the repository (e.g., `michaeldallen/mda` -> `/workspaces/mda`)
+- Each repository is cloned into a directory named after the repository inside `~/workspaces/`
+- The generated `.code-workspace` uses absolute folder paths that point at the shared clone root
 - Feature output uses emoji indicators for clarity (✓ = success, ✗ = failure, 📦 = cloning, etc.)

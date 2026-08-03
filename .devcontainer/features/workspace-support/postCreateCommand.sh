@@ -1,10 +1,47 @@
 #!/usr/bin/env bash
 # Workspace Support post-create hook.
-# Reads customizations.codespaces.repositories and clones listed repositories into /workspaces/
+# Reads customizations.codespaces.repositories and clones listed repositories into a writable workspace root.
 
 set -euo pipefail
 
 FEATURE_AUTO_CLONE="${DEVCONTAINER_FEATURE_WORKSPACE_SUPPORT_AUTOCLONE:-true}"
+
+# Resolve a workspace-folder path from the hub repository to a clone destination.
+workspace_folder_path() {
+    local repo_root="$1"
+    local target_path="$2"
+
+    python3 - "$repo_root" "$target_path" <<'PY'
+import os
+import sys
+
+repo_root = os.path.realpath(sys.argv[1])
+target_path = os.path.realpath(sys.argv[2])
+
+try:
+    common_root = os.path.commonpath([repo_root, target_path])
+except ValueError:
+    print(target_path)
+else:
+    if common_root == repo_root:
+        print(os.path.relpath(target_path, repo_root))
+    else:
+        print(target_path)
+PY
+}
+
+# Find the shared clone root used by every setup.
+resolve_clone_base_dir() {
+    local clone_root="${HOME}/workspaces"
+
+    if mkdir -p "${clone_root}" 2>/dev/null && [[ -w "${clone_root}" ]]; then
+        echo "${clone_root}"
+        return 0
+    fi
+
+    echo "✗ Error: ${clone_root} is not writable." >&2
+    return 1
+}
 
 # Ensure github.com is trusted for SSH clones to avoid interactive fingerprint prompts.
 ensure_github_known_host() {
@@ -89,7 +126,8 @@ extract_repositories() {
 # Keep the workspace file in sync with configured repository list.
 sync_workspace_file() {
         local repo_root="$1"
-        local repositories="$2"
+    local clone_base_dir="$2"
+    local repositories="$3"
         local workspace_file="${repo_root}/multi-repo.code-workspace"
         local temp_file
         local root_repo_name
@@ -109,8 +147,12 @@ EOF
 
                 while IFS= read -r repo_full_name; do
                         local repo_name
+                        local clone_path
+                        local workspace_path
                         [[ -z "${repo_full_name}" ]] && continue
                         repo_name="${repo_full_name##*/}"
+                        clone_path="${clone_base_dir}/${repo_name}"
+                        workspace_path=$(workspace_folder_path "${repo_root}" "${clone_path}")
 
                         # Avoid duplicate folder entries if the primary repo is listed.
                         [[ "${repo_name}" == "${root_repo_name}" ]] && continue
@@ -118,7 +160,7 @@ EOF
                         cat <<EOF
         ,{
             "name": "${repo_name}",
-            "path": "../${repo_name}"
+            "path": "${workspace_path}"
         }
 EOF
                 done <<< "${repositories}"
@@ -149,8 +191,9 @@ EOF
 # Clone a single repository
 clone_repository() {
     local repo_full_name="$1"  # e.g., "michaeldallen/mda"
+    local clone_base_dir="$2"
     local repo_name="${repo_full_name##*/}"  # Extract just the repo name after /
-    local clone_path="/workspaces/${repo_name}"
+    local clone_path="${clone_base_dir}/${repo_name}"
     local clone_url
 
     # Codespaces authentication is token-based; prefer HTTPS there.
@@ -205,6 +248,16 @@ main() {
 
     echo "📍 Using devcontainer config: ${devcontainer_json}"
 
+    local repo_root
+    repo_root="$(dirname "$(dirname "${devcontainer_json}")")"
+
+    local clone_base_dir
+    if ! clone_base_dir=$(resolve_clone_base_dir "${repo_root}"); then
+        return 1
+    fi
+
+    echo "📍 Using clone root: ${clone_base_dir}"
+
     # Preload github.com host keys only when SSH cloning may be used.
     if [[ "${CODESPACES:-false}" != "true" ]]; then
         ensure_github_known_host
@@ -220,12 +273,12 @@ main() {
 
     if [[ -z "${repositories}" ]]; then
         echo "ℹ No repositories found in customizations.codespaces.repositories"
-        sync_workspace_file "$(dirname "$(dirname "${devcontainer_json}")")" ""
+        sync_workspace_file "${repo_root}" "${clone_base_dir}" ""
         return 0
     fi
 
     # Sync the workspace file before any cloning attempt.
-    sync_workspace_file "$(dirname "$(dirname "${devcontainer_json}")")" "${repositories}"
+    sync_workspace_file "${repo_root}" "${clone_base_dir}" "${repositories}"
 
     if [[ "${FEATURE_AUTO_CLONE}" != "true" ]]; then
         echo "Auto-clone disabled. Skipping repository cloning."
@@ -238,7 +291,7 @@ main() {
     echo "🔄 Processing repositories..."
     while IFS= read -r repo; do
         if [[ -n "${repo}" ]]; then
-            if clone_repository "${repo}"; then
+            if clone_repository "${repo}" "${clone_base_dir}"; then
                 clone_count=$((clone_count + 1))
             else
                 fail_count=$((fail_count + 1))

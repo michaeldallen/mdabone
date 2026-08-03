@@ -6,19 +6,19 @@
     },
     {
       "name": "3d",
-      "path": "../3d"
+      "path": "/home/codespace/workspaces/3d"
     },
     {
       "name": "libmose",
-      "path": "../libmose"
+      "path": "/home/codespace/workspaces/libmose"
     },
     {
       "name": "mda",
-      "path": "../mda"
+      "path": "/home/codespace/workspaces/mda"
     },
     {
       "name": "recipes",
-      "path": "../recipes"
+      "path": "/home/codespace/workspaces/recipes"
     }
   ],
   "settings": {
