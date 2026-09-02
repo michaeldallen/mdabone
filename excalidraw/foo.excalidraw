@@ -28,8 +28,38 @@
       "version": 44,
       "versionNonce": 1021112811,
       "isDeleted": false,
-      "boundElements": null,
+      "boundElements": [],
       "updated": 1788384624201,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "1Wcbe9-NuIJyYIZKFqUQW",
+      "type": "ellipse",
+      "x": 197.0675811767578,
+      "y": 118.42868423461914,
+      "width": 103.4219970703125,
+      "height": 71.12065124511719,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "b04",
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1098906599,
+      "version": 26,
+      "versionNonce": 292123783,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1788385175442,
       "link": null,
       "locked": false
     }
@@ -42,4 +72,3 @@
   },
   "files": {}
 }
-
