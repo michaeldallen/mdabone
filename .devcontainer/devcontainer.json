@@ -41,7 +41,9 @@
       }
     },
     "vscode": {
-      "extensions": [],
+      "extensions": [
+        "nadomani.excalidraw-copilot"
+      ],
       "settings": {
         "git.autofetch": true,
         "git.detectSubmodules": true,
