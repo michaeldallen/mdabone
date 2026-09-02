@@ -1,0 +1,87 @@
+name: Update Excalidraw SVGs
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "**/*.excalidraw"
+
+permissions:
+  contents: write
+
+jobs:
+  export:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Setup node
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: 24.x
+
+      - name: Install Excalidraw exporter
+        shell: bash
+        run: |
+          npm install --global excalidraw-brute-export-cli
+
+      - name: Install Playwright Firefox
+        run: |
+          npx playwright install --with-deps firefox
+  
+
+      # CLI exporter for converting .excalidraw -> .svg 【1-35bb57】
+
+      - name: Find modified Excalidraw files
+        id: changed
+        run: |
+          git diff --name-only HEAD^ HEAD \
+            | grep '\.excalidraw$' \
+            > changed_files.txt || true
+
+          cat changed_files.txt
+
+          if [[ ! -s changed_files.txt ]]; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Export SVGs
+        if: steps.changed.outputs.has_changes == 'true'
+        run: |
+          while read -r file; do
+            [[ -z "$file" ]] && continue
+
+            svg="${file%.excalidraw}.svg"
+
+            echo "Exporting:"
+            echo "  Input : $file"
+            echo "  Output: $svg"
+            excalidraw-brute-export-cli \
+              --input "$file" \
+              --output "$svg"\
+              --format svg \
+              --scale 1
+          done < changed_files.txt
+      # Exports Excalidraw diagrams to SVG using a browser-based exporter. 【1-35bb57】
+      
+      - name: Commit updated SVGs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add '**/*.svg' '*.svg' || true
+
+          if git diff --cached --quiet; then
+            echo "No SVG changes detected."
+            exit 0
+          fi
+
+          git commit -m "chore(excalidraw): regenerate SVGs [skip ci]"
+          git push
