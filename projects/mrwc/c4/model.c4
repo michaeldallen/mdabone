@@ -1,0 +1,69 @@
+// Multi-Repo Workspace — C4 model (LikeC4 DSL)
+specification {
+  element person
+  element system
+  element container
+  element external
+}
+
+model {
+
+  dev = person 'Developer' {
+    description 'Edits code, opens the workspace'
+  }
+
+  mrwc = system 'Multi-Repo Codespace' {
+    description 'Dev environment presenting all repos as one workspace'
+
+    vscode = container 'VS Code Server' {
+      description 'Renders workspace, watches files'
+      technology 'Editor'
+    }
+
+    hook = container 'workspace-support hook' {
+      description 'Clones repos & writes workspace file'
+      technology 'Bash (post-create)'
+    }
+
+    repos = container 'Cloned repos' {
+      description '3d · libmose · mda · recipes'
+      technology '~/workspaces/*'
+    }
+
+    hub = container 'Hub repo' {
+      description 'devcontainer.json + workspace file'
+      technology 'mdabone'
+    }
+
+    vscode -> repos 'Watches & displays'
+    vscode -> hub 'Reads workspace file'
+    hook -> repos 'Populates'
+    hook -> hub 'Regenerates workspace file'
+  }
+
+  gh = external 'GitHub' {
+    description 'Hosts repositories & provisions codespace'
+  }
+
+  dev -> mrwc 'Opens & edits in'
+  mrwc -> gh 'Clones repos from'
+  gh -> mrwc 'Provisions & injects config'
+
+  hook -> gh 'Clones'
+}
+
+views {
+
+  view context of mrwc {
+    title 'System Context — Multi-Repo Workspace'
+    include mrwc, dev, gh
+    autoLayout LeftRight
+  }
+
+  view container of mrwc {
+    title 'Container — Inside the Multi-Repo Codespace'
+    include *
+    autoLayout TopBottom
+  }
+
+}

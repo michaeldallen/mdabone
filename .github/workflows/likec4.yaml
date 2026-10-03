@@ -1,0 +1,110 @@
+name: Render LikeC4 diagrams
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "**/*.likec4"
+      - "**/*.likec4.yaml"
+      - "**/likec4.config.*"
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: likec4-pages
+  cancel-in-progress: true
+
+jobs:
+  render:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    env:
+      LIKEC4_VERSION: "1.59.4"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Setup node
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: 24.x
+
+      - name: Install Graphviz (layout engine)
+        run: sudo apt-get update && sudo apt-get install -y graphviz
+
+      - name: Install LikeC4 CLI
+        run: npm install --global likec4@${LIKEC4_VERSION}
+
+      - name: Install pinned Playwright Chromium
+        run: likec4 export png --help >/dev/null 2>&1; npx playwright install --with-deps chromium
+
+      - name: Find modified LikeC4 sources
+        id: changed
+        run: |
+          git diff --name-only HEAD^ HEAD \
+            | grep -E '\.likec4$' \
+            > changed_files.txt || true
+
+          cat changed_files.txt
+
+          if [[ ! -s changed_files.txt ]]; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Export PNGs
+        if: steps.changed.outputs.has_changes == 'true'
+        run: |
+          while read -r file; do
+            [[ -z "$file" ]] && continue
+            dir="$(dirname "$file")"
+            echo "Exporting PNGs for views in: $dir"
+            likec4 export png "$dir" -o "$dir/png" || true
+          done < changed_files.txt
+
+      - name: Commit updated PNGs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add '**/png/*.png' || true
+          if git diff --cached --quiet; then
+            echo "No PNG changes to commit"
+          else
+            git commit -m "chore(likec4): regenerate PNGs [skip ci]"
+            git push
+          fi
+
+      - name: Build static site (for Pages)
+        run: |
+          out=".likec4-build"
+          rm -rf "$out"
+          # Build each directory that contains a changed .likec4 file
+          while read -r file; do
+            [[ -z "$file" ]] && continue
+            dir="$(dirname "$file")"
+            likec4 build "$dir" -o "$out/$(echo "$dir" | tr '/' '_')"
+          done < changed_files.txt
+
+      - name: Upload Pages artifact
+        if: steps.changed.outputs.has_changes == 'true'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .likec4-build
+
+  deploy:
+    if: github.actor != 'github-actions[bot]'
+    needs: render
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
