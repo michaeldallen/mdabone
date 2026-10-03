@@ -1,0 +1,60 @@
+{
+  "image": "mcr.microsoft.com/devcontainers/universal:6",
+  "features": {
+    "./features/postcreate-runner": {},
+    "./features/devcontainer-hybrid-auth": {},
+    "./features/workspace-support": {},
+    "./features/mdabone-support": {}
+  },
+  "postCreateCommand": "devcontainer-run-postcreate-hooks",
+  "customizations": {
+    "codespaces": {
+      "repositories": {
+        "michaeldallen/3d": {
+          "permissions": {
+            "contents": "write",
+            "pull_requests": "write",
+            "issues": "write"
+          }
+        },
+        "michaeldallen/recipes": {
+          "permissions": {
+            "contents": "write",
+            "pull_requests": "write",
+            "issues": "write"
+          }
+        },
+        "michaeldallen/libmose": {
+          "permissions": {
+            "contents": "write",
+            "pull_requests": "write",
+            "issues": "write"
+          }
+        },
+        "michaeldallen/mda": {
+          "permissions": {
+            "contents": "write",
+            "pull_requests": "write",
+            "issues": "write"
+          }
+        }
+      }
+    },
+    "vscode": {
+      "extensions": [
+        "nadomani.excalidraw-copilot",
+        "github.vscode-github-actions",
+        "mermaidchart.vscode-mermaid-chart",
+        "likec4.likec4-vscode"
+      ],
+      "settings": {
+        "git.autofetch": true,
+        "git.detectSubmodules": true,
+        "git.submoduleLimit": 10,
+        "terminal.integrated.env.linux": {
+          "PATH": "${env:PATH}:${userHome}/.local/bin"
+        }
+      }
+    }
+  }
+}
