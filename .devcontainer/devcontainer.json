@@ -10,27 +10,6 @@
   "customizations": {
     "codespaces": {
       "repositories": {
-        "michaeldallen/3d": {
-          "permissions": {
-            "contents": "write",
-            "pull_requests": "write",
-            "issues": "write"
-          }
-        },
-        "michaeldallen/recipes": {
-          "permissions": {
-            "contents": "write",
-            "pull_requests": "write",
-            "issues": "write"
-          }
-        },
-        "michaeldallen/libmose": {
-          "permissions": {
-            "contents": "write",
-            "pull_requests": "write",
-            "issues": "write"
-          }
-        },
         "michaeldallen/mda": {
           "permissions": {
             "contents": "write",
