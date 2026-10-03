@@ -43,7 +43,9 @@
     "vscode": {
       "extensions": [
         "nadomani.excalidraw-copilot",
-        "github.vscode-github-actions"
+        "github.vscode-github-actions",
+        "mermaidchart.vscode-mermaid-chart",
+        "likec4.likec4-vscode"
       ],
       "settings": {
         "git.autofetch": true,
