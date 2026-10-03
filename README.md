@@ -14,5 +14,11 @@
    * [Usage](ai/projects/mrwc/README.md#usage)
    * [Independence](ai/projects/mrwc/README.md#independence)
 
+* [C4 diagrams (LikeC4)](projects/mrwc/c4/README.md#c4-diagrams-likec4)
+   * [Files](projects/mrwc/c4/README.md#files)
+   * [Live preview (local)](projects/mrwc/c4/README.md#live-preview-local)
+   * [CI rendering](projects/mrwc/c4/README.md#ci-rendering)
+   * [Dependencies (needed locally and in CI)](projects/mrwc/c4/README.md#dependencies-needed-locally-and-in-ci)
+
 <!-- Created by https://github.com/ekalinin/github-markdown-toc -->
 <!--te-->
