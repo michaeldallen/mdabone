@@ -25,7 +25,7 @@ jobs:
       LIKEC4_VERSION: "1.59.4"
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           fetch-depth: 2
 
